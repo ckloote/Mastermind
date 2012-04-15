@@ -4,12 +4,12 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class RoundButton extends JComponent implements MouseListener {
+public class InputButton extends JComponent implements MouseListener {
     private int  currColor;
     private Color colors[];
     private boolean mousePressed;
 
-    public RoundButton() {
+    public InputButton() {
         this.addMouseListener(this);
 
         currColor = 0;
