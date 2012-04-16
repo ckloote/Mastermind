@@ -8,12 +8,14 @@ public class InputButton extends JComponent implements MouseListener {
     private int  currColor;
     private Color colors[];
     private boolean mousePressed;
+    private boolean editable;
 
     public InputButton() {
         this.addMouseListener(this);
 
         currColor = 0;
         mousePressed = false;
+        editable = true;
         colors = new Color[7];
         colors[0] = Color.BLACK;
         colors[1] = Color.RED;
@@ -44,6 +46,10 @@ public class InputButton extends JComponent implements MouseListener {
         return currColor;
     }
 
+    public void editOff() {
+        editable = false;
+    }
+
     public Dimension getMinimumSize() {
         return new Dimension(30,30);
     }
@@ -53,8 +59,10 @@ public class InputButton extends JComponent implements MouseListener {
     }
 
     public void mousePressed(MouseEvent e) {
-        mousePressed = true;
-        repaint();
+        if (editable) {
+            mousePressed = true;
+            repaint();
+        }
     }
 
     public void mouseReleased(MouseEvent e) {
