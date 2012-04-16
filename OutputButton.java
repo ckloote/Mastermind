@@ -20,7 +20,7 @@ public class OutputButton extends JComponent {
             g.fillOval(0,0,10,10);
         } else {
             g.setColor(Color.BLACK);
-            g.drawOval(0,0,30,30);
+            g.drawOval(0,0,10,10);
         }
     }
 
