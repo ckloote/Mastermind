@@ -46,6 +46,11 @@ public class InputButton extends JComponent implements MouseListener {
         return currColor;
     }
 
+    public void setCurrColor(int newColor) {
+        currColor = newColor;
+        repaint();
+    }
+
     public void editOff() {
         editable = false;
     }

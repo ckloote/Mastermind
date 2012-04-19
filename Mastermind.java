@@ -4,12 +4,15 @@ import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.util.Random;
 
-public class Mastermind extends JFrame {
+public class Mastermind extends JFrame implements ActionListener {
     InputButton guesses[][];
     OutputButton clues[][];
     InputButton key[];
     JButton btnEnter;
+    int counter;
+    String keyVal;
 
     public static void main(String args[]) {
         new Mastermind();
@@ -18,6 +21,8 @@ public class Mastermind extends JFrame {
     public Mastermind() {
         super("Mastermind");
         setupGUI();
+        initValues();
+        registerListeners();
     }
 
     public void setupGUI() {
@@ -62,5 +67,117 @@ public class Mastermind extends JFrame {
         this.setDefaultCloseOperation(Mastermind.EXIT_ON_CLOSE);
         this.setSize(325, 700);
         this.setVisible(true);
+    }
+
+    public void initValues() {
+        counter = 9;
+
+        Random rand = new Random();
+        for (int i=0;i<4;i++) {
+            key[i].setCurrColor((rand.nextInt(6) + 1));
+            key[i].editOff();
+        }
+
+        keyVal = new String();
+        keyVal = stringValue(key);
+    }
+
+    public String stringValue(InputButton[] buttons) {
+        String value = new String();
+
+        for (int i=0; i<buttons.length; i++) {
+            value += String.format("%d", buttons[i].getCurrColor());
+        }
+
+        System.out.println(value);
+        return value;
+    }
+
+    public void registerListeners() {
+        btnEnter.addActionListener(this);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        System.out.println(e.getActionCommand());
+        if (e.getSource() == btnEnter) {
+            submitGuess();
+        } else {
+            System.out.println("ERROR");
+        }
+    }
+
+    public void submitGuess() {
+        if (validGuess()) {
+            if (counter > 0) {
+                System.out.println("Valid!");
+                returnClue();
+                counter--;
+            } else {
+                youLose();
+            }
+        } else {
+            System.out.println("Invalid!");
+        }
+    }
+
+    public boolean validGuess() {
+        for (int i=0; i<4; i++) {
+            if (guesses[counter][i].getCurrColor() == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void youLose() {
+        JOptionPane.showMessageDialog(null, "You Lose!");
+    }
+
+    public void youWin() {
+        JOptionPane.showMessageDialog(null, "You Win!");
+    }
+
+    public void returnClue() {
+        int exactMatch = 0;
+        int colorMatch = 0;
+        int result = 0;
+        String guessVal = new String();
+        guessVal = stringValue(guesses[counter]);
+
+        for (int i=0; i<4; i++) {
+            if (keyVal.charAt(i) == guessVal.charAt(i)) {
+                exactMatch++;
+            }
+        }
+        for (int i=1; i<7; i++) {
+            colorMatch += Math.min(count(keyVal, Character.forDigit(i,10)),
+                              count(guessVal, Character.forDigit(i,10)));
+        }
+        colorMatch -= exactMatch;
+
+        System.out.println("[" + exactMatch + ", " + colorMatch + "]");
+
+        for (int i=exactMatch; i>0; i--) {
+            clues[counter][result].setColor(2);
+            result++;
+        }
+        for (int i=colorMatch; i>0; i--) {
+            clues[counter][result].setColor(1);
+            result++;
+        }
+
+        if (exactMatch == 4) {
+            youWin();
+        }
+    }
+
+    public int count(String value, char x) {
+        int cnt = 0;
+        for (int i=0; i<value.length(); i++) {
+            if (value.charAt(i) == x) {
+                cnt++;
+            }
+        }
+        return cnt;
     }
 }
