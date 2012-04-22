@@ -28,7 +28,7 @@ public class OutputButton extends JComponent {
         return currColor;
     }
 
-    public void setColor(int newColor) {
+    public void setCurrColor(int newColor) {
         currColor = newColor;
         repaint();
     }

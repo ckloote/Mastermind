@@ -12,7 +12,8 @@ public class Mastermind extends JFrame implements ActionListener {
     InputButton key[];
     JButton btnEnter;
     int counter;
-    String keyVal;
+    String keyVal = new String();
+    Random rand = new Random();
 
     public static void main(String args[]) {
         new Mastermind();
@@ -72,14 +73,24 @@ public class Mastermind extends JFrame implements ActionListener {
     public void initValues() {
         counter = 9;
 
-        Random rand = new Random();
         for (int i=0;i<4;i++) {
+            key[i].visOff();
             key[i].setCurrColor((rand.nextInt(6) + 1));
-            key[i].editOff();
         }
 
-        keyVal = new String();
         keyVal = stringValue(key);
+
+        for (int i=0; i<10; i++) {
+            for (int j=0; j<4; j++) {
+                guesses[i][j].setCurrColor(0);
+                if (i==9) {
+                    guesses[i][j].editOn();
+                } else {
+                    guesses[i][j].editOff();
+                }
+                clues[i][j].setCurrColor(0);
+            }
+        }
     }
 
     public String stringValue(InputButton[] buttons) {
@@ -107,16 +118,21 @@ public class Mastermind extends JFrame implements ActionListener {
     }
 
     public void submitGuess() {
+        boolean win = false;
         if (validGuess()) {
-            if (counter > 0) {
-                System.out.println("Valid!");
-                returnClue();
-                counter--;
-            } else {
-                youLose();
+            win = returnClue();
+            if (win) {
+                gameOver(true);
+                return;
             }
-        } else {
-            System.out.println("Invalid!");
+            counter--;
+            if (counter < 0) {
+                gameOver(false);
+                return;
+            }
+            for (int i=0; i<4; i++) {
+                guesses[counter][i].editOn();
+            }
         }
     }
 
@@ -129,15 +145,30 @@ public class Mastermind extends JFrame implements ActionListener {
         return true;
     }
 
-    public void youLose() {
-        JOptionPane.showMessageDialog(null, "You Lose!");
+    public void gameOver(boolean winner) {
+        for (int i=0; i<4; i++) {
+            key[i].visOn();
+        }
+        String msg = new String();
+        if (winner) {
+            msg = "You win!";
+        } else {
+            msg = "You lose!";
+        }
+        int ans =
+            JOptionPane.showConfirmDialog(null,"Do you want to play again?",
+                                          msg, JOptionPane.YES_NO_OPTION,
+                                          JOptionPane.PLAIN_MESSAGE);
+        if (ans == 0) {
+            initValues();
+        } else if (ans == 1) {
+            System.exit(0);
+        } else {
+            System.out.println("ERROR");
+        }
     }
 
-    public void youWin() {
-        JOptionPane.showMessageDialog(null, "You Win!");
-    }
-
-    public void returnClue() {
+    public boolean returnClue() {
         int exactMatch = 0;
         int colorMatch = 0;
         int result = 0;
@@ -158,16 +189,18 @@ public class Mastermind extends JFrame implements ActionListener {
         System.out.println("[" + exactMatch + ", " + colorMatch + "]");
 
         for (int i=exactMatch; i>0; i--) {
-            clues[counter][result].setColor(2);
+            clues[counter][result].setCurrColor(2);
             result++;
         }
         for (int i=colorMatch; i>0; i--) {
-            clues[counter][result].setColor(1);
+            clues[counter][result].setCurrColor(1);
             result++;
         }
 
         if (exactMatch == 4) {
-            youWin();
+            return true;
+        } else {
+            return false;
         }
     }
 
