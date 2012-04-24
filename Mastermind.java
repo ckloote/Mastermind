@@ -221,6 +221,7 @@ public class Mastermind extends JFrame implements ActionListener {
             guesses[counter][2].setCurrColor(2);
             guesses[counter][3].setCurrColor(2);
             sc = score(keyVal, guess).split(",");
+            returnClue();
             while (counter >= 0 && !sc[0].equals("4")) {
                 submitGuess();
                 for (int i=0; i<sol.size(); i++) {
