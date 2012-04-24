@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.Random;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Mastermind extends JFrame implements ActionListener {
     InputButton guesses[][];
@@ -193,7 +195,46 @@ public class Mastermind extends JFrame implements ActionListener {
 
     public void playComp() {
         if (validGuess(key)) {
-            System.out.println("valid");
+            String guess = new String();
+            String[] sc = new String[2];
+            ArrayList<String> possible = new ArrayList<String>();
+            ArrayList<String> sol = new ArrayList<String>();
+
+            for (int i=1111; i<6667; i++) {
+                if ( !String.format("%d", i).contains("0") &&
+                     !String.format("%d", i).contains("7") &&
+                     !String.format("%d", i).contains("8") &&
+                     !String.format("%d", i).contains("9") ) {
+                    possible.add(String.format("%d", i));
+                    sol.add(String.format("%d", i));
+                }
+            }
+
+            keyVal = stringValue(key);
+            guess = "1122";
+            guesses[counter][0].setCurrColor(1);
+            guesses[counter][1].setCurrColor(1);
+            guesses[counter][2].setCurrColor(2);
+            guesses[counter][3].setCurrColor(2);
+            sc = score(keyVal, guess).split(",");
+            while (counter >= 0 && !sc[0].equals("4")) {
+                submitGuess();
+                for (int i=0; i<sol.size(); i++) {
+                    while (i != sol.size() &&
+                           !Arrays.deepEquals(sc,
+                                              score(sol.get(i),
+                                                    guess).split(","))) {
+                        sol.remove(i);
+                    }
+                }
+                sc[0]="4";
+            }
+
+            if (counter < 0) {
+                gameOver(true);
+            } else if (sc[0].equals("4")) {
+                gameOver(false);
+            }
         }
     }
 
