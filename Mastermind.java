@@ -32,7 +32,6 @@ public class Mastermind extends JFrame implements ActionListener {
     public void setupGUI() {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new GridLayout(11, 2, 0, 15));
-        //mainPanel.add(new JLabel("Key:"));
         JPanel keyPanel = new JPanel();
         keyPanel.setLayout(new FlowLayout());
         key = new InputButton[4];
