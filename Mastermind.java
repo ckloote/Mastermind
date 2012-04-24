@@ -31,8 +31,10 @@ public class Mastermind extends JFrame implements ActionListener {
 
     public void setupGUI() {
         JPanel mainPanel = new JPanel();
+        mainPanel.setBackground(Color.LIGHT_GRAY);
         mainPanel.setLayout(new GridLayout(11, 2, 0, 15));
         JPanel keyPanel = new JPanel();
+        keyPanel.setBackground(Color.LIGHT_GRAY);
         keyPanel.setLayout(new FlowLayout());
         key = new InputButton[4];
         for (int i=0; i<4; i++) {
@@ -47,8 +49,10 @@ public class Mastermind extends JFrame implements ActionListener {
         clues = new OutputButton[10][4];
         for (int i=0; i<10; i++) {
             cluePanels[i] = new JPanel();
+            cluePanels[i].setBackground(Color.LIGHT_GRAY);
             cluePanels[i].setLayout(new GridLayout(2,2));
             guessPanels[i] = new JPanel();
+            guessPanels[i].setBackground(Color.LIGHT_GRAY);
             for (int j=0; j<4; j++) {
                 clues[i][j] = new OutputButton();
                 cluePanels[i].add(clues[i][j]);
@@ -60,6 +64,7 @@ public class Mastermind extends JFrame implements ActionListener {
         }
         btnEnter = new JButton("Enter");
         JPanel enterPanel = new JPanel();
+        enterPanel.setBackground(Color.LIGHT_GRAY);
         enterPanel.add(btnEnter);
         Container window = this.getContentPane();
         window.setLayout(new BorderLayout());
