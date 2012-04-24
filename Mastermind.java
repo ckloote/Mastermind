@@ -227,7 +227,22 @@ public class Mastermind extends JFrame implements ActionListener {
                         sol.remove(i);
                     }
                 }
-                sc[0]="4";
+                if (sol.size() == 1) {
+                    guess = sol.get(0);
+                } else {
+                    int minval = 1296;
+                    for (int i=0; i<1296; i++) {
+                        int tmp = getMax(possible.get(i), sol);
+                        if (tmp < minval) {
+                            minval = tmp;
+                            guess = possible.get(i);
+                        }
+                    }
+                }
+                for (int i=0; i<4; i++) {
+                    guesses[counter][i].setCurrColor(Integer.parseInt(guess.substring(i, i+1)));
+                }
+                sc = score(keyVal, guess).split(",");
             }
 
             if (counter < 0) {
@@ -236,6 +251,25 @@ public class Mastermind extends JFrame implements ActionListener {
                 gameOver(false);
             }
         }
+    }
+
+    public int getMax(String attempt, ArrayList<String> set) {
+        String[] scores = {"0,0", "0,1", "0,2", "0,3", "0,4", "1,0", "1,1",
+                           "1,2", "1,3", "2,0", "2,1", "2,2", "3,0", "4,0"};
+        int max = 0;
+
+        for (int i=0; i<scores.length; i++) {
+            int cnt = 0;
+            for (int j=0; j<set.size(); j++) {
+                if (score(set.get(j), attempt).equals(scores[i])) {
+                    cnt++;
+                }
+            }
+            if (cnt > max) {
+                max = cnt;
+            }
+        }
+        return max;
     }
 
     public boolean returnClue() {
