@@ -220,10 +220,9 @@ public class Mastermind extends JFrame implements ActionListener {
             guesses[counter][1].setCurrColor(1);
             guesses[counter][2].setCurrColor(2);
             guesses[counter][3].setCurrColor(2);
+            submitGuess();
             sc = score(keyVal, guess).split(",");
-            returnClue();
             while (counter >= 0 && !sc[0].equals("4")) {
-                submitGuess();
                 for (int i=0; i<sol.size(); i++) {
                     while (i != sol.size() &&
                            !Arrays.deepEquals(sc,
@@ -236,7 +235,7 @@ public class Mastermind extends JFrame implements ActionListener {
                     guess = sol.get(0);
                 } else {
                     int minval = 1296;
-                    for (int i=0; i<1296; i++) {
+                    for (int i=0; i<possible.size(); i++) {
                         int tmp = getMax(possible.get(i), sol);
                         if (tmp < minval) {
                             minval = tmp;
@@ -248,12 +247,7 @@ public class Mastermind extends JFrame implements ActionListener {
                     guesses[counter][i].setCurrColor(Integer.parseInt(guess.substring(i, i+1)));
                 }
                 sc = score(keyVal, guess).split(",");
-            }
-
-            if (counter < 0) {
-                gameOver(true);
-            } else if (sc[0].equals("4")) {
-                gameOver(false);
+                submitGuess();
             }
         }
     }
