@@ -70,9 +70,10 @@ public class InputButton extends JComponent implements MouseListener {
         editable = edit;
     }
 
-    // set visible state
+    // set visible state and redraw
     public void setVis(boolean vis) {
         visible = vis;
+        repaint();
     }
 
     // set default size of component
