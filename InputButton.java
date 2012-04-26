@@ -4,13 +4,16 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 
+// Custom button to take input for Mastermind game
 public class InputButton extends JComponent implements MouseListener {
+    // properties of button
     private int  currColor;
     private Color colors[];
     private boolean mousePressed;
     private boolean editable;
     private boolean visible;
 
+    // constructor - initialize values
     public InputButton() {
         this.addMouseListener(this);
 
@@ -28,17 +31,22 @@ public class InputButton extends JComponent implements MouseListener {
         colors[6] = Color.MAGENTA;
     }
 
+    // redraw button
     public void paint(Graphics g) {
+        // if mouse was clicked, go to next color
         if (mousePressed) {
             if (currColor == 6) {
+                // and if at end, return to beginning of color list
                 currColor = 1;
             } else {
                 currColor++;
             }
         }
+        // if visible, show color change
         if (visible) {
             g.setColor(colors[currColor]);
         }
+        // then redraw
         if (currColor == 0 || !visible) {
             g.drawOval(0,0,30,30);;
         } else {
@@ -46,40 +54,36 @@ public class InputButton extends JComponent implements MouseListener {
         }
     }
 
+    // get current color
     public int getCurrColor() {
         return currColor;
     }
 
+    //set color and then redraw
     public void setCurrColor(int newColor) {
         currColor = newColor;
         repaint();
     }
 
-    public void editOff() {
-        editable = false;
+    //set edit state
+    public void setEdit(boolean edit) {
+        editable = edit;
     }
 
-    public void editOn() {
-        editable = true;
+    // set visible state
+    public void setVis(boolean vis) {
+        visible = vis;
     }
 
-    public void visOn() {
-        visible = true;
-        repaint();
-    }
-
-    public void visOff() {
-        visible = false;
-    }
-
+    // set default size of component
     public Dimension getMinimumSize() {
         return new Dimension(30,30);
     }
-
     public Dimension getPreferredSize() {
         return new Dimension(30,30);
     }
 
+    // if mouse pressed and editable, then redraw
     public void mousePressed(MouseEvent e) {
         if (editable) {
             mousePressed = true;
@@ -87,13 +91,13 @@ public class InputButton extends JComponent implements MouseListener {
         }
     }
 
+    // keep track of mouse being released
     public void mouseReleased(MouseEvent e) {
         mousePressed = false;
     }
 
+    // required when implementing mouselistener
     public void mouseClicked(MouseEvent e) {}
-
     public void mouseEntered(MouseEvent e) {}
-
     public void mouseExited(MouseEvent e) {}
 }

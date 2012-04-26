@@ -4,13 +4,17 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 
+// custom button to display clues for Mastermind
 public class OutputButton extends JComponent {
+    // data member
     private int  currColor;
 
+    // constructor
     public OutputButton() {
         currColor = 0;
     }
 
+    //draw component
     public void paint(Graphics g) {
         if (currColor == 1) {
             g.setColor(Color.WHITE);
@@ -24,19 +28,21 @@ public class OutputButton extends JComponent {
         }
     }
 
+    // get color
     public int getCurrColor() {
         return currColor;
     }
 
+    // set color and redraw
     public void setCurrColor(int newColor) {
         currColor = newColor;
         repaint();
     }
 
+    //set default size
     public Dimension getMinimumSize() {
         return new Dimension(10,10);
     }
-
     public Dimension getPreferredSize() {
         return new Dimension(10,10);
     }
